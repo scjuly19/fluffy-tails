@@ -1,0 +1,27 @@
+.wishlist-wrapper{
+    margin: 1rem;
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 1rem;
+    justify-items: center;
+    align-items: center;
+}
+
+@media only screen and (max-width: 768px) {
+    .wishlist-wrapper{
+        grid-template-columns: 1fr;
+    }
+}
+/*Tablet specific styles*/
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
+    .wishlist-wrapper {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+ 
+  /*Large screen specific styles*/
+  @media only screen and (min-width: 1280px) {
+    .wishlist-wrapper {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }

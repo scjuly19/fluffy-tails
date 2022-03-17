@@ -1,0 +1,243 @@
+@import url("https://fonts.googleapis.com/css2?family=Didact+Gothic&display=swap");
+:root {
+  --primary-color: #fd3260;
+  --secondary-color: #272727;
+  --btn-font: white;
+  --nav-bg: #f3f3f4;
+  --faded-grey:#cccccc;
+}
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+/*Site Styles*/
+html {
+  font-size: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Didact Gothic", sans-serif;
+}
+a {
+  text-decoration: none;
+  color: var(--secondary-color);
+}
+.page-container {
+  position: relative;
+  min-height: 100vh;
+}
+header {
+  background-color: var(--primary-color);
+  padding: 0.5rem 1rem;
+  color: var(--btn-font);
+  flex-wrap: wrap;
+  padding: 10px;
+  position: sticky;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 3;
+  gap: 4rem;
+}
+main {
+  padding-bottom: 6rem;
+}
+footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4rem;
+  text-align: center;
+}
+button {
+  cursor: pointer;
+}
+.nav-list-item {
+  display: inline-block;
+  padding: 0.5rem;
+}
+.nav-list-item a {
+  color: var(--btn-font);
+}
+.primary-btn {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+.products-list {
+  padding: 0rem 1rem;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  row-gap: 2rem;
+  grid-template-rows: auto;
+  justify-items: center;
+  align-items: center;
+}
+.card-actions {
+  right: 20px;
+  margin-top: 0;
+}
+.main-category-link {
+  color: var(--btn-font);
+}
+.cart-close-btn {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  background: none;
+  border: none;
+  color: var(--primary-color);
+}
+.cart-drawer {
+  margin-left: calc(100vw - 350px);
+  color: var(--secondary-color);
+  width: 350px;
+}
+
+.drawer {
+  background-color: var(--btn-font);
+}
+.drawer-close-btn {
+  color: var(--primary-color);
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: none;
+  border: none;
+}
+.checkout-btn {
+  width: 100%;
+}
+
+.logo-wrapper a {
+  color: var(--btn-font);
+}
+.nav-item-grp{
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-grow: 3;
+}
+.navbar-search{
+  flex-grow: 1;
+  align-items: center;
+  background-color: var(--btn-font);
+  padding: 0 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  max-width: 80%;
+}
+.navbar-search input{
+  width: 90%;
+  border: none;
+  border-radius: 5px;
+  padding: 0.5rem;
+  outline: none;
+  
+}
+.mobile-logo-wrapper{
+  display: none;
+}
+.badge-wth-number{
+background-color:white;
+color: var(--primary-color);
+font-weight: bold;
+right: -4px;
+}
+/*Utilities*/
+.uppercase {
+  text-transform: uppercase;
+}
+.text-left {
+  text-align: left;
+}
+.text-right {
+  text-align: right;
+}
+.primary-txt {
+  color: var(--primary-color);
+}
+.small-img {
+  max-width: 90px;
+}
+.move-up {
+  margin-top: -20px;
+}
+.text-underline {
+  text-decoration: underline;
+}
+.outline-btn {
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+.outline-btn:hover{
+  background-color: var(--primary-color);
+}
+.wishlist-btn{
+  position: absolute;
+  top: 10px;
+  left: 5px;
+  color: var(--primary-color);
+}
+.align-end{
+  align-items: flex-end;
+}
+.m-0{
+  margin: 0;
+}
+.flex-1{
+flex:1 1 0%;
+}
+.flex-2{
+  flex: 2 1 0%;
+}
+/*Mobile specific styles*/
+@media only screen and (max-width: 768px) {
+  .products-list {
+    grid-template-columns: 1fr;
+  }
+  .products-list-item {
+    margin-top: 1rem;
+  } 
+  .logo-wrapper{
+    display: none;
+  }
+  .nav-item-grp{
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+  .mobile-logo-wrapper{
+    flex-grow: 1;
+    display: block;
+  }
+  .nav-list{
+    display: flex;
+  }
+  .navbar-search{
+    max-width: 100%;
+    margin-top: 0.5rem;
+  }
+  
+}
+/*Tablet specific styles*/
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
+  .products-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+/*14inch Laptop specific*/
+@media only screen and (min-width: 1024px) and (max-width: 1279px) {
+  .products-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+/*Large screen specific styles*/
+@media only screen and (min-width: 1280px) and (max-width: 1555px) {
+  .products-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

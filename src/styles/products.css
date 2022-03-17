@@ -1,0 +1,40 @@
+.content-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+}
+.side-nav-container {
+  background-color: var(--nav-bg);
+  padding: 1rem;
+  position: sticky;
+  overscroll-behavior: contain;
+  top: 3rem;
+  width: 290px;
+  height: 100vh;
+  overflow-y: auto;
+  display: block;
+  flex-shrink: 0;
+}
+.product-content-wrapper {
+  padding: 1rem;
+  flex: 1 1 0%;
+}
+.filter-btn {
+  height: 40px;
+  margin-right: 10px;
+  border: 1px solid var(--primary-color);
+}
+.clear-btn{
+  position: absolute;
+  right: 10px;
+}
+/*Mobile and tablet specific styles*/
+@media only screen and (max-width: 1024px) {
+  .side-nav-container {
+    display: none;
+  }
+  .filter-btn {
+    display: block;
+    margin-top: 20px;
+    margin-left: 20px;
+  }
+}

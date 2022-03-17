@@ -1,0 +1,9 @@
+@media only screen and (max-width: 768px) {
+    .login-nav{
+        flex-direction: column;
+    }
+    .login-nav li{
+        margin-top: 0.5rem;
+        margin-left: 0px;
+    }
+  }
