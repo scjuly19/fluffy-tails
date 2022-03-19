@@ -148,6 +148,18 @@ color: var(--primary-color);
 font-weight: bold;
 right: -4px;
 }
+.loader{
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  background-color: var(--faded-grey);
+  opacity: 0.9;
+}
 /*Utilities*/
 .uppercase {
   text-transform: uppercase;

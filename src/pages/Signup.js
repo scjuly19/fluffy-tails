@@ -2,7 +2,7 @@ import React from 'react'
 import {
   Link
 } from "react-router-dom";
-export default function Signup() {
+export function Signup() {
   return (
 <main>
         <h2 className="text-center uppercase">Create Account</h2>
