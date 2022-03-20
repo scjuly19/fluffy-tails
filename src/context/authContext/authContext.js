@@ -7,29 +7,31 @@ const AuthContext = createContext();
 const useAuthContext = () => useContext(AuthContext);
 const useAuth = () => {
   let existingToken = JSON.parse(localStorage.getItem("token"));
-  let existingUser = JSON.parse(localStorage.getItem("userData"));
-  const [token,setToken]=useState(existingToken?existingToken:null)
+  let existingUser =JSON.parse(localStorage.getItem("userData"));
+  const [token, setToken] = useState(existingToken ?. token);
   const [authed, setAuthed] = useState(existingToken ? true : false);
-  const [userData, setUserData] = useState(existingUser ? existingUser : null);
-
+  const [userData, setUserData] = useState(existingUser ?. user);
+console.log(token,userData)
   const { dispatch } = useDataContext();
 
-  const login = async (email,password) => {
+  const login = async (email, password) => {
     dispatch({ type: actionTypes.fetchData });
     try {
-      const { data } = await loginRequest(email,password);
+      const { data } = await loginRequest(email, password);
       dispatch({ type: actionTypes.fetchSuccess });
       setAuthed(true);
-      setToken(data.encodedToken)
-      localStorage.setItem("token", JSON.stringify(data.encodedToken));
-      localStorage.setItem("userData", JSON.stringify(data.foundUser));
+      setToken(data.encodedToken);
+      console.log(data)
+      localStorage.setItem("token", JSON.stringify({token:data.encodedToken}));
+      localStorage.setItem("userData", JSON.stringify({user:data.foundUser}));
       setUserData(data.foundUser);
     } catch (error) {
+      console.log('err',error)
       dispatch({ type: actionTypes.fetchFailed, payload: error });
       setAuthed(false);
     }
   };
-  return { authed, login, userData,token };
+  return { authed, login, userData, token };
 };
 const AuthProvider = ({ children }) => {
   const { authed, login, userData } = useAuth();
