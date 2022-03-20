@@ -6,21 +6,24 @@ const AuthContext = createContext();
 
 const useAuthContext = () => useContext(AuthContext);
 const useAuth = () => {
-  let existingToken = JSON.parse(localStorage.getItem("token"));
-  let existingUser = JSON.parse(localStorage.getItem("userData"));
-  const [token,setToken]=useState(existingToken?existingToken:null)
+  let existingToken =
+    localStorage.getItem("token") && JSON.parse(localStorage.getItem("token"));
+  let existingUser =
+    localStorage.getItem("userData") &&
+    JSON.parse(localStorage.getItem("userData"));
+  const [token, setToken] = useState(existingToken ? existingToken : null);
   const [authed, setAuthed] = useState(existingToken ? true : false);
   const [userData, setUserData] = useState(existingUser ? existingUser : null);
 
   const { dispatch } = useDataContext();
 
-  const login = async (email,password) => {
+  const login = async (email, password) => {
     dispatch({ type: actionTypes.fetchData });
     try {
-      const { data } = await loginRequest(email,password);
+      const { data } = await loginRequest(email, password);
       dispatch({ type: actionTypes.fetchSuccess });
       setAuthed(true);
-      setToken(data.encodedToken)
+      setToken(data.encodedToken);
       localStorage.setItem("token", JSON.stringify(data.encodedToken));
       localStorage.setItem("userData", JSON.stringify(data.foundUser));
       setUserData(data.foundUser);
@@ -29,7 +32,7 @@ const useAuth = () => {
       setAuthed(false);
     }
   };
-  return { authed, login, userData,token };
+  return { authed, login, userData, token };
 };
 const AuthProvider = ({ children }) => {
   const { authed, login, userData } = useAuth();
