@@ -21,10 +21,12 @@ console.log(token,userData)
       dispatch({ type: actionTypes.fetchSuccess });
       setAuthed(true);
       setToken(data.encodedToken);
+      console.log(data)
       localStorage.setItem("token", JSON.stringify({token:data.encodedToken}));
       localStorage.setItem("userData", JSON.stringify({user:data.foundUser}));
       setUserData(data.foundUser);
     } catch (error) {
+      console.log('err',error)
       dispatch({ type: actionTypes.fetchFailed, payload: error });
       setAuthed(false);
     }
