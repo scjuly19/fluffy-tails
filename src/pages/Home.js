@@ -1,27 +1,14 @@
 import React, { useState,useEffect } from "react";
-import axios from "axios";
 import Card from "../components/Card";
-import { useCartContext } from "../context/cartContext/cartContext";
-import { useWishlistContext } from "../context/wishlistContext/wishlistContext";
-import PRODUCTS from "../mock/products.json";
+import { useDataContext } from "../context/dataContext/dataContext";
 
-export default function Home() {
-  const { addToCart } = useCartContext();
-  const bestsellers = JSON.parse(JSON.stringify(PRODUCTS.slice(-5)));
-  const [data, setData] = useState([...bestsellers]);
-  const {addToWishlist,removeFromWishlist}=useWishlistContext();
-useEffect(()=>{
-  axios.get('/api/products')
-  .then(function (response) {
-    // handle success
-    console.log(response)
-  })
-  .catch(function (error) {
-    // handle error
-    console.log(error);
-  })
 
-},[])
+
+export  function Home() {
+  const {state}=useDataContext();
+  const {productData}=state;
+  const bestsellers = productData.slice(-5);
+
   const handleAddToCart = (selectedItem) => {
     return () => {
       const newData = data.map((item) => {
@@ -68,12 +55,12 @@ useEffect(()=>{
         <span>😋</span>
       </p>
       <section id="products" className="products-list">
-        {data.map((item) => (
+        {bestsellers.map((item) => (
           <Card
             item={item}
             key={item.id}
-            onAddToCartClick={handleAddToCart(item)}
-            onWishlistClick={handleAddWishlist(item)}
+            // onAddToCartClick={handleAddToCart(item)}
+            // onWishlistClick={handleAddWishlist(item)}
           />
         ))}
       </section>

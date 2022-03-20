@@ -1,47 +1,17 @@
 import React, { useState } from "react";
 import "../styles/products.css";
 import Card from "../components/Card";
-import PRODUCTS from "../mock/products.json";
-import { useCartContext } from "../context/cartContext/cartContext";
-import { useWishlistContext } from "../context/wishlistContext/wishlistContext";
 
-export default function Products() {
-  const { addToCart } = useCartContext();
-  const {addToWishlist,removeFromWishlist}=useWishlistContext();
-  const [data, setData] = useState(JSON.parse(JSON.stringify(PRODUCTS)));
+import { useDataContext } from "../context/dataContext/dataContext";
 
+export  function Products() {
+  const { state } = useDataContext();
+  const { productData } = state;
   const handleAddToCart = (selectedItem) => {
-    return () => {
-      const newData = data.map((item) => {
-        if (item.id === selectedItem.id) {
-          item.addedToCart = true;
-        } else {
-          item.addedToCart = false;
-        }
-        return item;
-      });
-      setData(newData);
-      addToCart({ ...selectedItem, quantity: 1 });
-    };
+    return () => {};
   };
   const handleAddWishlist = (selectedItem) => {
-    return () => {
-      const newData = PRODUCTS.map((item) => {
-        if (item.id === selectedItem.id) {
-          if( item.hasOwnProperty('addedToWishlist') && item.addedToWishlist){
-          item.addedToWishlist = false;
-          removeFromWishlist(selectedItem.id)
-          }
-          else 
-          {
-            item.addedToWishlist=true;
-            addToWishlist(selectedItem);
-          }
-        } 
-        return item;
-      });
-      setData(newData);
-    };
+    return () => {};
   };
   return (
     <main>
@@ -248,12 +218,12 @@ export default function Products() {
           id="products"
           className="products-list product-content-wrapper"
         >
-          {data.map((item) => (
+          {productData.map((item) => (
             <Card
               item={item}
               key={item.id}
-              onAddToCartClick={handleAddToCart(item)}
-              onWishlistClick={handleAddWishlist(item)}
+              // onAddToCartClick={handleAddToCart(item)}
+              // onWishlistClick={handleAddWishlist(item)}
             />
           ))}
         </section>

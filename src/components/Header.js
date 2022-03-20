@@ -1,86 +1,97 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import Cart from "../pages/Cart";
-import Home from "../pages/Home";
-import Login from "../pages/Login";
-import Products from "../pages/Products";
-import Signup from "../pages/Signup";
-import Wishlist from "../pages/Wishlist";
-import { useCartContext } from "../context/cartContext/cartContext";
-import { useWishlistContext } from "../context/wishlistContext/wishlistContext";
-import Mockman from 'mockman-js';
+import Loader from "./loader";
+import Mockman from "mockman-js";
+import {Home,Cart,Wishlist,Products,Login,Signup} from '../pages/index';
+import { useDataContext } from "../context/dataContext/dataContext";
+import { RequireAuth } from "./RequireAuth";
+import { useAuthContext } from "../context/authContext/authContext";
 export default function Header() {
-  const {state}=useCartContext();
-  const {state:wishlistState}=useWishlistContext();
-  const {cartData}=state;
-  const{wishlistData}=wishlistState;
-  const cartItemsCount=cartData.length;
-  const wishlistItemsCount=wishlistData.length;
+  const { state: dataState } = useDataContext();
+  const{authed}=useAuthContext();
+  const { loading } = dataState;
   return (
-    <Router>
-      <header className="flex align-items-center header-wrapper">
-        <div className="logo-wrapper">
-          <Link to="/">Fluffy Tails</Link>
-        </div>
-        <nav className="nav-item-grp">
-          <form className="navbar-search">
-            <input type="text" placeholder="Search..." />
-            <button className="borderless-btn">
-              <i className="fas fa-search"></i>
-            </button>
-          </form>
-          <ul className="nav-list">
-            <li className="no-bullets-li nav-list-item  mobile-logo-wrapper hide">
-              <Link to="/">Fluffy Tails</Link>
-            </li>
-            <li className="no-bullets-li nav-list-item">
-              <Link to="/products">
-                <i className="fas fa-store"></i>
-              </Link>
-            </li>
-            <li className="no-bullets-li nav-list-item relative">
-              <Link to="/wishlist">
-                <i className="far fa-heart"></i>
-                {wishlistItemsCount>0&&<span className="status-badge badge-wth-number round-badge">{wishlistItemsCount}</span>}
+    <>
+      {loading && <Loader />}
+      <Router>
+        <header className="flex align-items-center header-wrapper">
+          <div className="logo-wrapper">
+            <Link to="/">Fluffy Tails</Link>
+          </div>
+          <nav className="nav-item-grp">
+            <form className="navbar-search">
+              <input type="text" placeholder="Search..." />
+              <button className="borderless-btn">
+                <i className="fas fa-search"></i>
+              </button>
+            </form>
+            <ul className="nav-list">
+              <li className="no-bullets-li nav-list-item  mobile-logo-wrapper hide">
+                <Link to="/">Fluffy Tails</Link>
+              </li>
+              <li className="no-bullets-li nav-list-item">
+                <Link to="/products">
+                  <i className="fas fa-store"></i>
+                </Link>
+              </li>
+              <li className="no-bullets-li nav-list-item relative">
+                <Link to="/wishlist">
+                  <i className="far fa-heart"></i>
 
-              </Link>
-            </li>
-            <li className="no-bullets-li nav-list-item">
-              <Link to="/login">
-                <i className="far fa-user"></i>
-              </Link>
-            </li>
-            <li className="no-bullets-li nav-list-item relative">
-              <Link to="/cart" >
-                <i className="fas fa-shopping-cart"></i>
-                {cartItemsCount>0&&<span className="status-badge badge-wth-number round-badge">{cartItemsCount}</span>}
-              </Link>
-            </li>
-          </ul>
-          <div className="drawer-container hide" id="cart-drawer-container">
-            <div className="drawer-wrapper">
-              <div className="drawer cart-drawer" id="cart-drawer">
-                <button
-                  className="`borderless-btn fs-30 cart-close-btn"
-                  id="close-cart"
-                >
-                  <i className="fa fa-times" aria-hidden="true"></i>
-                </button>
+                  <span className="status-badge badge-wth-number round-badge hide"></span>
+                </Link>
+              </li>
+              {!authed&&<li className="no-bullets-li nav-list-item">
+                <Link to="/login">
+                  <i className="far fa-user"></i>
+                </Link>
+              </li>}
+              <li className="no-bullets-li nav-list-item relative">
+                <Link to="/cart">
+                  <i className="fas fa-shopping-cart"></i>
+
+                  <span className="status-badge badge-wth-number round-badge hide"></span>
+                </Link>
+              </li>
+            </ul>
+            <div className="drawer-container hide" id="cart-drawer-container">
+              <div className="drawer-wrapper">
+                <div className="drawer cart-drawer" id="cart-drawer">
+                  <button
+                    className="`borderless-btn fs-30 cart-close-btn"
+                    id="close-cart"
+                  >
+                    <i className="fa fa-times" aria-hidden="true"></i>
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        </nav>
-      </header>
-      <Routes>
-        <Route path="/wishlist" element={<Wishlist />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/products" element={<Products />} />
-        <Route path="/" element={<Home />} />
-        <Route path="/mock" element={<Mockman />} />
-
-      </Routes>
-    </Router>
+          </nav>
+        </header>
+        <Routes>
+          <Route
+            path="/wishlist"
+            element={
+              <RequireAuth>
+                <Wishlist />
+              </RequireAuth>
+            }
+          />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<Login />} />
+          <Route
+            path="/cart"
+            element={
+              <RequireAuth>
+                <Cart />
+              </RequireAuth>
+            }
+          />
+          <Route path="/products" element={<Products />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/mock" element={<Mockman />} />
+        </Routes>
+      </Router>
+    </>
   );
 }

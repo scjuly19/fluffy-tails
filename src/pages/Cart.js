@@ -1,7 +1,6 @@
-import React from "react";
+import React,{useState} from "react";
 import "../styles/cart.css";
 import { Link } from "react-router-dom";
-import { useCartContext } from "../context/cartContext/cartContext";
 
 const CartRow = ({
   price,
@@ -85,9 +84,8 @@ const CartTotal = ({ cartTotal }) => {
     </div>
   );
 };
-export default function Cart() {
-  const { state, removeFromCart, updateCart } = useCartContext();
-  const { cartData } = state;
+export  function Cart() {
+ const [cartData,setCartData]=useState([])
   const cartTotal = cartData.reduce((acc, item) => acc + (item.price*item.quantity), 0);
   const handleDecrement = (selectedItemId) => {
     let updatedCartData = cartData.map((item) => {
