@@ -9,10 +9,10 @@ const useAuth = () => {
   let existingToken,existingUser;
   try{
     existingToken=
-    localStorage.getItem("token") && JSON.parse(localStorage.getItem("token"));
+    localStorage.getItem("token") ?JSON.parse(localStorage.getItem("token")):null;
   existingUser =
-    localStorage.getItem("userData") &&
-    JSON.parse(localStorage.getItem("userData"));
+    localStorage.getItem("userData") ?
+    JSON.parse(localStorage.getItem("userData")):null;
   }
   catch(err){
     console.log(err)
