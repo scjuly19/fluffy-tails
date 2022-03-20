@@ -6,11 +6,17 @@ const AuthContext = createContext();
 
 const useAuthContext = () => useContext(AuthContext);
 const useAuth = () => {
-  let existingToken =
+  let existingToken,existingUser;
+  try{
+    existingToken=
     localStorage.getItem("token") && JSON.parse(localStorage.getItem("token"));
-  let existingUser =
+  existingUser =
     localStorage.getItem("userData") &&
     JSON.parse(localStorage.getItem("userData"));
+  }
+  catch(err){
+    console.log(err)
+  }
   const [token, setToken] = useState(existingToken ? existingToken : null);
   const [authed, setAuthed] = useState(existingToken ? true : false);
   const [userData, setUserData] = useState(existingUser ? existingUser : null);
