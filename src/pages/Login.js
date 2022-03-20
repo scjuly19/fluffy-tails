@@ -1,27 +1,21 @@
-import React ,{useState} from "react";
+import React, { useState } from "react";
 import "../styles/login.css";
 import "../styles/form.css";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { useAuthContext } from "../context/authContext/authContext";
+import { useAuthForm } from "../hooks/useAuthForm";
 export function Login() {
-  const { authed, login, userData } = useAuthContext();
-  const[inputs,setInputs]=useState({});
+  const { login } = useAuthContext();
+  const { inputs, state, navigate,handleChange } = useAuthForm();
 
-  const { state } = useLocation();
-
-  const navigate = useNavigate();
-const handleChange=e=>{
-  e.preventDefault();
-  let name=e.target.name;
-  let value=e.target.value;
-  setInputs({...inputs,[name]:value})
-}
+  /*Handles login action*/
   const handleLogin = (e) => {
     e.preventDefault();
-   const{email,password}=inputs;
-   console.log(email,password)
-    login(email,password).then(() => navigate(state?.path || "/products"));
+    const { email, password } = inputs;
+    console.log('statelogin',state)
+
+    login(email, password).then(() => navigate(state?.path || "/products"));
   };
   return (
     <main>

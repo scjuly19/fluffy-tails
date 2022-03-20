@@ -1,17 +1,13 @@
 import axios from "axios";
 
 const signupRequest = async (firstName, lastName, email, password) => {
-  axios.post("/api/auth/signup", {
+  const reqObj = { firstName, lastName, email, password };
+  return axios.post("/api/auth/signup", reqObj);
+};
+const loginRequest = async (email, password) =>
+  axios.post("/api/auth/login", {
     email,
     password,
-    firstName,
-    lastName,
   });
-};
-const loginRequest=async(email,password)=>
-    axios.post("/api/auth/login", {
-        email,
-        password
-      });
 
-export {signupRequest,loginRequest};
+export { signupRequest, loginRequest };
