@@ -1,2 +1,2 @@
-export { getProducts } from './dataRequests';
-export {signupRequest,loginRequest} from './authRequest';
+export { getProducts, getCart, addToCart,quantityUpdate,deleteFromCart } from "./dataRequests";
+export { signupRequest, loginRequest } from "./authRequest";

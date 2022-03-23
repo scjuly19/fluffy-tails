@@ -1,21 +1,24 @@
-import React,{useState} from "react";
+import React from "react";
 import "../styles/cart.css";
 import { Link } from "react-router-dom";
+import { useDataContext } from "../context/dataContext/dataContext";
+import { quantityUpdateHandler, removeItemHandler } from "../utils/cartUtils";
+import { useAuthContext } from "../context/authContext/authContext";
 
 const CartRow = ({
   price,
   productName,
-  quantity,
+  qty,
   image,
-  id,
+  _id,
   onIncrementClick,
   onDecrementClick,
-  onRemoveClick
+  onRemoveClick,
 }) => {
-  const totalPrice = quantity * price;
-  const incrementQuantity = () => onIncrementClick(id);
-  const decrementQuantity = () => onDecrementClick(id);
-  const removeItem=()=>onRemoveClick(id);
+  const totalPrice = qty * price;
+  const incrementQuantity = () => onIncrementClick(_id);
+  const decrementQuantity = () => onDecrementClick(_id,qty);
+  const removeItem = () => onRemoveClick(_id);
   return (
     <div className="flex cart-item-wrapper ">
       <div>
@@ -33,12 +36,15 @@ const CartRow = ({
             <button className="cart-quantity-btn" onClick={decrementQuantity}>
               <i className="fa fa-minus"></i>
             </button>
-            <p className="bold">{quantity}</p>
+            <p className="bold">{qty}</p>
             <button className="cart-quantity-btn" onClick={incrementQuantity}>
               <i className="fa fa-plus"></i>
             </button>
           </div>
-          <button className="text-center borderless-btn text-underline uppercase" onClick={removeItem}>
+          <button
+            className="text-center borderless-btn text-underline uppercase"
+            onClick={removeItem}
+          >
             Remove
           </button>
         </div>
@@ -84,28 +90,26 @@ const CartTotal = ({ cartTotal }) => {
     </div>
   );
 };
-export  function Cart() {
- const [cartData,setCartData]=useState([])
-  const cartTotal = cartData.reduce((acc, item) => acc + (item.price*item.quantity), 0);
-  const handleDecrement = (selectedItemId) => {
-    let updatedCartData = cartData.map((item) => {
-      if (item.id === selectedItemId && item.quantity>1) {
-        item.quantity -= 1;
-      }
-      return item;
-    });
-    updateCart(updatedCartData);
+export function Cart() {
+  const { state, dispatch } = useDataContext();
+  const { token } = useAuthContext();
+  const { cartData } = state;
+  const cartTotal =
+    cartData.length > 0 &&
+    cartData.reduce((acc, item) => acc + item.price * item.qty, 0);
+
+  const handleDecrement = (id,qty) => {
+    if(qty>1){
+    quantityUpdateHandler(dispatch, id, token, "decrement");
+    }
+    else{
+      removeItemHandler(dispatch, id, token)
+    }
   };
   const handleIncrement = (selectedItemId) => {
-    const updatedCartData = cartData.map((item) => {
-      if (item.id === selectedItemId) {
-        item.quantity += 1;
-      }
-      return item;
-    });
-    updateCart(updatedCartData);
+    quantityUpdateHandler(dispatch, selectedItemId, token, "increment");
   };
-  const handleRemoveItem=(selectedItemId)=>removeFromCart(selectedItemId)
+  const handleRemoveItem = (selectedItemId) => removeItemHandler(dispatch, selectedItemId, token);
   return (
     <main>
       <div className="content-wrapper column">
@@ -120,7 +124,7 @@ export  function Cart() {
             {cartData.map((item) => (
               <CartRow
                 {...item}
-                key={item.id}
+                key={item._id}
                 onDecrementClick={handleDecrement}
                 onIncrementClick={handleIncrement}
                 onRemoveClick={handleRemoveItem}

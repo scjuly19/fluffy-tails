@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 export default function Card(props) {
   const { price, productName, image, addedToCart,addedToWishlist } = props.item;
   const { isWishlist, onAddToCartClick, onWishlistClick } = props;
+  
 
   return (
     <div className="card card-vertical products-list-item">

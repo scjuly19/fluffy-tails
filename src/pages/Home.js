@@ -1,26 +1,34 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Card from "../components/Card";
+import { useAuthContext } from "../context/authContext/authContext";
+import { actionTypes } from "../context/dataContext/actionTypes";
 import { useDataContext } from "../context/dataContext/dataContext";
+import { addToCartHandler } from "../utils/cartUtils";
 
-
-
-export  function Home() {
-  const {state}=useDataContext();
-  const {productData}=state;
+export function Home() {
+  const { state, dispatch } = useDataContext();
+  const { productData } = state;
   const bestsellers = productData.slice(-5);
-
+  const { token } = useAuthContext();
   const handleAddToCart = (selectedItem) => {
     return () => {
-      const newData = data.map((item) => {
-        if (item.id === selectedItem.id) {
+      const { _id, productName, price, image } = selectedItem;
+      const addItemObj = {
+        _id,
+        productName,
+        price,
+        image,
+      };
+      addToCartHandler(dispatch, addItemObj, token);
+      let newData = productData.map((item) => {
+        if (item._id === selectedItem._id) {
           item.addedToCart = true;
         } else {
           item.addedToCart = false;
         }
         return item;
       });
-      setData(newData);
-      addToCart({ ...selectedItem, quantity: 1 });
+      dispatch({ type: actionTypes.setProductData, payload: newData });
     };
   };
   const handleAddWishlist = (selectedItem) => {
@@ -58,8 +66,8 @@ export  function Home() {
         {bestsellers.map((item) => (
           <Card
             item={item}
-            key={item.id}
-            // onAddToCartClick={handleAddToCart(item)}
+            key={item._id}
+            onAddToCartClick={handleAddToCart(item)}
             // onWishlistClick={handleAddWishlist(item)}
           />
         ))}

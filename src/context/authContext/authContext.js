@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { loginRequest, signupRequest } from "../../network";
 import { actionTypes } from "../dataContext/actionTypes";
-import { useDataContext } from "../dataContext/dataContext";
 const AuthContext = createContext();
 
 const useAuthContext = () => useContext(AuthContext);
@@ -10,17 +9,15 @@ const useAuth = () => {
   let existingUser = JSON.parse(localStorage.getItem("userData"));
   const [token, setToken] = useState(existingToken?.token);
   const [authed, setAuthed] = useState(existingToken ? true : false);
+  const [loader, setLoader] = useState(false);
   const [userData, setUserData] = useState(existingUser?.user);
 
-  const { dispatch } = useDataContext();
-
   const login = async (email, password) => {
-    dispatch({ type: actionTypes.fetchData });
+    setLoader(true)
     try {
       const { data } = await loginRequest(email, password);
-      console.log('data',data)
-      dispatch({ type: actionTypes.fetchSuccess });
       setAuthed(true);
+      setLoader(false)
       setToken(data.encodedToken);
       localStorage.setItem(
         "token",
@@ -32,12 +29,12 @@ const useAuth = () => {
       );
       setUserData(data.foundUser);
     } catch (error) {
-      dispatch({ type: actionTypes.fetchFailed, payload: error });
       setAuthed(false);
+      setLoader(false)
+
     }
   };
   const signUp = async (firstName, lastName, email, password) => {
-    dispatch({ type: actionTypes.fetchData });
     try {
       const { data } = await signupRequest(
         firstName,
@@ -45,7 +42,6 @@ const useAuth = () => {
         email,
         password
       );
-      dispatch({ type: actionTypes.fetchSuccess });
       setAuthed(true);
       setToken(data.encodedToken);
       localStorage.setItem(
@@ -57,15 +53,14 @@ const useAuth = () => {
         JSON.stringify({ user: data.createdUser })
       );
     } catch (error) {
-      dispatch({ type: actionTypes.fetchFailed, payload: error });
       setAuthed(false);
     }
   };
-  return { authed, login, userData, token, signUp };
+  return { authed, login, userData, token, signUp,loader };
 };
 const AuthProvider = ({ children }) => {
-  const { authed, login, userData, signUp, token } = useAuth();
-  const value = { authed, login, userData, signUp, token };
+  const { authed, login, userData, signUp, token,loader } = useAuth();
+  const value = { authed, login, userData, signUp, token,loader };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 export { AuthProvider, useAuthContext };
