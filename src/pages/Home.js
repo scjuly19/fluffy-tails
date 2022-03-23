@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Card from "../components/Card";
 import { useAuthContext } from "../context/authContext/authContext";
-import { actionTypes } from "../context/dataContext/actionTypes";
 import { useDataContext } from "../context/dataContext/dataContext";
-import { addToCartHandler } from "../utils/cartUtils";
+import { addToCartClickHandler } from "../utils/cartUtils";
 
 export function Home() {
   const { state, dispatch } = useDataContext();
@@ -12,23 +11,8 @@ export function Home() {
   const { token } = useAuthContext();
   const handleAddToCart = (selectedItem) => {
     return () => {
-      const { _id, productName, price, image } = selectedItem;
-      const addItemObj = {
-        _id,
-        productName,
-        price,
-        image,
-      };
-      addToCartHandler(dispatch, addItemObj, token);
-      let newData = productData.map((item) => {
-        if (item._id === selectedItem._id) {
-          item.addedToCart = true;
-        } else {
-          item.addedToCart = false;
-        }
-        return item;
-      });
-      dispatch({ type: actionTypes.setProductData, payload: newData });
+      addToCartClickHandler(selectedItem,dispatch,token,productData)
+
     };
   };
   const handleAddWishlist = (selectedItem) => {

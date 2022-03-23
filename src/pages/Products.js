@@ -3,9 +3,8 @@ import "../styles/products.css";
 import Card from "../components/Card";
 
 import { useDataContext } from "../context/dataContext/dataContext";
-import { addToCartHandler } from "../utils/cartUtils";
 import { useAuthContext } from "../context/authContext/authContext";
-import { actionTypes } from "../context/dataContext/actionTypes";
+import { addToCartClickHandler } from "../utils/cartUtils";
 
 export function Products() {
   const { state, dispatch } = useDataContext();
@@ -13,23 +12,7 @@ export function Products() {
   const { productData } = state;
   const handleAddToCart = (selectedItem) => {
     return () => {
-      const { _id, productName, price, image } = selectedItem;
-      const addItemObj = {
-        _id,
-        productName,
-        price,
-        image
-      };
-      addToCartHandler(dispatch, addItemObj, token);
-      let newData = productData.map((item) => {
-        if (item._id === selectedItem._id) {
-          item.addedToCart = true;
-        } else {
-          item.addedToCart = false;
-        }
-        return item;
-      });
-      dispatch({ type: actionTypes.setProductData, payload: newData });
+      addToCartClickHandler(selectedItem,dispatch,token,productData)
     };
   };
   const handleAddWishlist = (selectedItem) => {

@@ -31,4 +31,23 @@ const removeItemHandler=async(dispatch,productId,token)=>{
     dispatch({ type: actionTypes.fetchFailed });
   }
 }
-export { addToCartHandler, quantityUpdateHandler,removeItemHandler };
+const addToCartClickHandler=(selectedItem,dispatch,token,productData)=>{
+  const { _id, productName, price, image } = selectedItem;
+  const addItemObj = {
+    _id,
+    productName,
+    price,
+    image
+  };
+  addToCartHandler(dispatch, addItemObj, token);
+  let newData = productData.map((item) => {
+    if (item._id === selectedItem._id) {
+      item.addedToCart = true;
+    } else {
+      item.addedToCart = false;
+    }
+    return item;
+  });
+  dispatch({ type: actionTypes.setProductData, payload: newData });
+}
+export { addToCartClickHandler, quantityUpdateHandler,removeItemHandler };
