@@ -2,13 +2,13 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Loader from "./loader";
 import Mockman from "mockman-js";
-import {Home,Cart,Wishlist,Products,Login,Signup} from '../pages/index';
+import { Home, Cart, Wishlist, Products, Login, Signup } from "../pages/index";
 import { useDataContext } from "../context/dataContext/dataContext";
 import { RequireAuth } from "./RequireAuth";
 import { useAuthContext } from "../context/authContext/authContext";
 export default function Header() {
   const { state: dataState } = useDataContext();
-  const{authed}=useAuthContext();
+  const { authed } = useAuthContext();
   const { loading } = dataState;
   return (
     <>
@@ -41,11 +41,13 @@ export default function Header() {
                   <span className="status-badge badge-wth-number round-badge hide"></span>
                 </Link>
               </li>
-              {!authed&&<li className="no-bullets-li nav-list-item">
-                <Link to="/login">
-                  <i className="far fa-user"></i>
-                </Link>
-              </li>}
+              {!authed && (
+                <li className="no-bullets-li nav-list-item">
+                  <Link to="/login">
+                    <i className="far fa-user"></i>
+                  </Link>
+                </li>
+              )}
               <li className="no-bullets-li nav-list-item relative">
                 <Link to="/cart">
                   <i className="fas fa-shopping-cart"></i>

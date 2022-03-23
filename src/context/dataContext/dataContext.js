@@ -12,19 +12,29 @@ const DataProvider = ({ children }) => {
   const [state, dispatch] = useReducer(dataReducer, INITIAL_STATE);
   useEffect(() => {
     const fetchData = async () => {
-      dispatch({type:actionTypes.fetchData})
+      let didCancel = false;
+
+      dispatch({ type: actionTypes.fetchData });
       try {
         const { data } = await getProducts();
-        dispatch({type:actionTypes.fetchSuccess});
-        dispatch({
-          type: actionTypes.setProductData,
-          payload: data.products,
-        });
+        if (!didCancel) {
+          dispatch({ type: actionTypes.fetchSuccess });
+          dispatch({
+            type: actionTypes.setProductData,
+            payload: data.products,
+          });
+        }
       } catch (error) {
-        dispatch({ type: actionTypes.fetchFailed, payload: error });
+        if (!didCancel) {
+          dispatch({ type: actionTypes.fetchFailed, payload: error });
+        }
       }
     };
     fetchData();
+
+    return () => {
+      didCancel = true;
+    };
   }, []);
 
   const providerValue = { state, dispatch };

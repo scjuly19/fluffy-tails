@@ -1,4 +1,5 @@
 import axios from "axios";
-
-const getProducts=async()=>axios.get("/api/products");
-export {getProducts};
+import { ENDPOINTS } from "./urls";
+const { ALL_PRODUCTS } = ENDPOINTS;
+const getProducts = async () => axios.get(ALL_PRODUCTS);
+export { getProducts };

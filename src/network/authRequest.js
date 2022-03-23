@@ -1,17 +1,14 @@
 import axios from "axios";
-
+import { ENDPOINTS } from "./urls";
+const { LOGIN, SIGN_UP } = ENDPOINTS;
 const signupRequest = async (firstName, lastName, email, password) => {
-  axios.post("/api/auth/signup", {
+  const reqObj = { firstName, lastName, email, password };
+  return axios.post(SIGN_UP, reqObj);
+};
+const loginRequest = async (email, password) =>
+  axios.post(LOGIN, {
     email,
     password,
-    firstName,
-    lastName,
   });
-};
-const loginRequest=async(email,password)=>
-    axios.post("/api/auth/login", {
-        email,
-        password
-      });
 
-export {signupRequest,loginRequest};
+export { signupRequest, loginRequest };
