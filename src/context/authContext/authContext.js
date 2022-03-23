@@ -18,6 +18,7 @@ const useAuth = () => {
     dispatch({ type: actionTypes.fetchData });
     try {
       const { data } = await loginRequest(email, password);
+      console.log('data',data)
       dispatch({ type: actionTypes.fetchSuccess });
       setAuthed(true);
       setToken(data.encodedToken);

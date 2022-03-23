@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "../styles/login.css";
-import "../styles/form.css";
 import { Link } from "react-router-dom";
 
 import { useAuthContext } from "../context/authContext/authContext";
@@ -13,8 +12,6 @@ export function Login() {
   const handleLogin = (e) => {
     e.preventDefault();
     const { email, password } = inputs;
-    console.log('statelogin',state)
-
     login(email, password).then(() => navigate(state?.path || "/products"));
   };
   return (
