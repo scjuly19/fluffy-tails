@@ -17,7 +17,7 @@ const CartRow = ({
 }) => {
   const totalPrice = qty * price;
   const incrementQuantity = () => onIncrementClick(_id);
-  const decrementQuantity = () => onDecrementClick(_id,qty);
+  const decrementQuantity = () => onDecrementClick(_id, qty);
   const removeItem = () => onRemoveClick(_id);
   return (
     <div className="flex cart-item-wrapper ">
@@ -98,18 +98,16 @@ export function Cart() {
     cartData.length > 0 &&
     cartData.reduce((acc, item) => acc + item.price * item.qty, 0);
 
-  const handleDecrement = (id,qty) => {
-    if(qty>1){
-    quantityUpdateHandler(dispatch, id, token, "decrement");
-    }
-    else{
-      removeItemHandler(dispatch, id, token)
-    }
-  };
+  const handleDecrement = (id, qty) =>
+    qty > 1
+      ? quantityUpdateHandler(dispatch, id, token, "decrement")
+      : removeItemHandler(dispatch, id, token);
+
   const handleIncrement = (selectedItemId) => {
     quantityUpdateHandler(dispatch, selectedItemId, token, "increment");
   };
-  const handleRemoveItem = (selectedItemId) => removeItemHandler(dispatch, selectedItemId, token);
+  const handleRemoveItem = (selectedItemId) =>
+    removeItemHandler(dispatch, selectedItemId, token);
   return (
     <main>
       <div className="content-wrapper column">
