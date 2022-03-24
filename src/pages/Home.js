@@ -3,6 +3,10 @@ import Card from "../components/Card";
 import { useAuthContext } from "../context/authContext/authContext";
 import { useDataContext } from "../context/dataContext/dataContext";
 import { addToCartClickHandler } from "../utils/cartUtils";
+import {
+  removeFromWishlistClickHandler,
+  addToWishlistClickHandler,
+} from "../utils/wishlistUtils";
 
 export function Home() {
   const { state, dispatch } = useDataContext();
@@ -11,25 +15,24 @@ export function Home() {
   const { token } = useAuthContext();
   const handleAddToCart = (selectedItem) => {
     return () => {
-      addToCartClickHandler(selectedItem,dispatch,token,productData)
-
+      addToCartClickHandler(selectedItem, dispatch, token, productData);
     };
   };
   const handleAddWishlist = (selectedItem) => {
     return () => {
-      const newData = PRODUCTS.map((item) => {
-        if (item.id === selectedItem.id) {
-          if (item.hasOwnProperty("addedToWishlist") && item.addedToWishlist) {
-            item.addedToWishlist = false;
-            removeFromWishlist(selectedItem.id);
-          } else {
-            item.addedToWishlist = true;
-            addToWishlist(selectedItem);
-          }
-        }
-        return item;
-      });
-      setData(newData.slice(-5));
+      if (
+        selectedItem.hasOwnProperty("addedToWishlist") &&
+        selectedItem.addedToWishlist
+      ) {
+        removeFromWishlistClickHandler(
+          selectedItem._id,
+          token,
+          productData,
+          dispatch
+        );
+      } else {
+        addToWishlistClickHandler(selectedItem, dispatch, token, productData);
+      }
     };
   };
   return (
@@ -52,7 +55,7 @@ export function Home() {
             item={item}
             key={item._id}
             onAddToCartClick={handleAddToCart(item)}
-            // onWishlistClick={handleAddWishlist(item)}
+            onWishlistClick={handleAddWishlist(item)}
           />
         ))}
       </section>

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { ENDPOINTS } from "./urls";
-const { GET_ALL_PRODUCTS, GET_CART_ITEMS } = ENDPOINTS;
+const { GET_ALL_PRODUCTS, GET_CART_ITEMS, GET_WISHLIST_ITEMS } = ENDPOINTS;
 const getProducts = async () => axios.get(GET_ALL_PRODUCTS);
 const getCart = async (encodedToken) =>
   axios.get(GET_CART_ITEMS, {
@@ -18,8 +18,8 @@ const addToCart = async (product, encodedToken) =>
       },
     }
   );
-const quantityUpdate = async (productId, encodedToken,actionType) =>{
-  let url=GET_CART_ITEMS + "/" + productId
+const quantityUpdate = async (productId, encodedToken, actionType) => {
+  const url = `${GET_CART_ITEMS}/${productId}`;
   return axios.post(
     url,
     {
@@ -33,13 +33,51 @@ const quantityUpdate = async (productId, encodedToken,actionType) =>{
       },
     }
   );
-  }
-const deleteFromCart=async(productId,encodedToken)=>{
-  let url=GET_CART_ITEMS + "/" + productId;
-  return axios.delete(url,{
+};
+const deleteFromCart = async (productId, encodedToken) => {
+  const url = `${GET_CART_ITEMS}/${productId}`;
+  return axios.delete(url, {
     headers: {
       authorization: encodedToken,
+    },
+  });
+};
+
+const getWishlist = async (encodedToken) => {
+  return axios.get(GET_WISHLIST_ITEMS, {
+    headers: {
+      authorization: encodedToken,
+    },
+  });
+};
+
+const addToWishlist = async (product, encodedToken) => {
+  return axios.post(
+    GET_WISHLIST_ITEMS,
+    { product },
+    {
+      headers: {
+        authorization: encodedToken,
+      },
     }
-  })
-}
-export { getProducts, getCart, addToCart, quantityUpdate,deleteFromCart };
+  );
+};
+
+const removeFromWishlist = async (productId, encodedToken) => {
+  const url = `${GET_WISHLIST_ITEMS}/${productId}`;
+  return axios.delete(url, {
+    headers: {
+      authorization: encodedToken,
+    },
+  });
+};
+export {
+  getProducts,
+  getCart,
+  addToCart,
+  quantityUpdate,
+  deleteFromCart,
+  getWishlist,
+  addToWishlist,
+  removeFromWishlist,
+};

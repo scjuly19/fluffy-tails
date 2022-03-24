@@ -1,48 +1,64 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 
 import "../styles/wishlist.css";
 import Card from "../components/Card";
+import { useDataContext } from "../context/dataContext/dataContext";
+import { useAuthContext } from "../context/authContext/authContext";
+import { addToCartClickHandler } from "../utils/cartUtils";
+import { actionTypes } from "../context/dataContext/actionTypes";
+import { removeFromWishlistClickHandler } from "../utils/wishlistUtils";
 
-export  function Wishlist() {
-  const [data,setData]=useState([]);
+
+export function Wishlist() {
+  const { state, dispatch } = useDataContext();
+  const { token } = useAuthContext();
+  const { wishlistData, productData } = state;
   const handleAddToCart = (selectedItem) => {
     return () => {
-      const newData = wishlistData.map((item) => {
-        if (item.id === selectedItem.id) {
+      addToCartClickHandler(selectedItem, dispatch, token, productData);
+      let updatedWishlistData = wishlistData.map((item) => {
+        if (item._id === selectedItem._id) {
           item.addedToCart = true;
         } else {
           item.addedToCart = false;
         }
         return item;
       });
-      setData(newData);
-      addToCart({ ...selectedItem, quantity: 1 });
+      dispatch({
+        type: actionTypes.setWishlistData,
+        payload: updatedWishlistData,
+      });
     };
   };
   const handleRemoveWishlist = (selectedItemId) => {
     return () => {
-      removeFromWishlist(selectedItemId);
+      removeFromWishlistClickHandler(
+        selectedItemId,
+        token,
+        productData,
+        dispatch
+      );
     };
   };
   return (
     <main>
       <div className="content-wrapper column">
-        {data.length > 0 && (
+        {wishlistData.length > 0 && (
           <h3 className="text-center">
             My Wishlist{" "}
             <span className="light-txt">{`(${wishlistData.length})`}</span>
           </h3>
         )}
-        {data.length > 0 ? (
+        {wishlistData.length > 0 ? (
           <section id="wishlist" className="wishlist-wrapper">
-            {data.map((item) => (
+            {wishlistData.map((item) => (
               <Card
                 item={item}
-                key={item.id}
+                key={item._id}
                 isWishlist={true}
-                // onWishlistClick={handleRemoveWishlist(item.id)}
-                // onAddToCartClick={handleAddToCart(item)}
+                onWishlistClick={handleRemoveWishlist(item._id)}
+                onAddToCartClick={handleAddToCart(item)}
               />
             ))}
           </section>

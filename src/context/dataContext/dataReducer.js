@@ -1,6 +1,6 @@
 import { actionTypes } from "./actionTypes";
 
-export const dataReducer = ( state, action ) => {
+export const dataReducer = (state, action) => {
   switch (action.type) {
     case actionTypes.fetchData:
       return {
@@ -23,10 +23,15 @@ export const dataReducer = ( state, action ) => {
         ...state,
         productData: action.payload,
       };
-      case actionTypes.setCartData:
+    case actionTypes.setCartData:
       return {
         ...state,
         cartData: action.payload,
+      };
+    case actionTypes.setWishlistData:
+      return {
+        ...state,
+        wishlistData: action.payload,
       };
     default:
       return state;
