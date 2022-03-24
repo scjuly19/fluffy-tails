@@ -1,14 +1,19 @@
-import React, { useState } from "react";
+import React from "react";
 import "../styles/products.css";
 import Card from "../components/Card";
 
 import { useDataContext } from "../context/dataContext/dataContext";
+import { useAuthContext } from "../context/authContext/authContext";
+import { addToCartClickHandler } from "../utils/cartUtils";
 
-export  function Products() {
-  const { state } = useDataContext();
+export function Products() {
+  const { state, dispatch } = useDataContext();
+  const { token } = useAuthContext();
   const { productData } = state;
   const handleAddToCart = (selectedItem) => {
-    return () => {};
+    return () => {
+      addToCartClickHandler(selectedItem,dispatch,token,productData)
+    };
   };
   const handleAddWishlist = (selectedItem) => {
     return () => {};
@@ -221,8 +226,8 @@ export  function Products() {
           {productData.map((item) => (
             <Card
               item={item}
-              key={item.id}
-              // onAddToCartClick={handleAddToCart(item)}
+              key={item._id}
+              onAddToCartClick={handleAddToCart(item)}
               // onWishlistClick={handleAddWishlist(item)}
             />
           ))}

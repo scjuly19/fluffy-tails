@@ -1,22 +1,33 @@
 import React, { createContext, useContext, useReducer, useEffect } from "react";
-import { getProducts } from "../../network";
+import { getProducts, getCart } from "../../network";
+import { useAuthContext } from "../authContext/authContext";
 import { actionTypes } from "./actionTypes";
 import { dataReducer } from "./dataReducer";
 export const INITIAL_STATE = {
   productData: [],
+  cartData: []
 };
+
 const DataContext = createContext();
 const useDataContext = () => useContext(DataContext);
 
 const DataProvider = ({ children }) => {
   const [state, dispatch] = useReducer(dataReducer, INITIAL_STATE);
+  const { token } = useAuthContext();
   useEffect(() => {
-    const fetchData = async () => {
-      let didCancel = false;
+    let didCancel = false;
 
+    const fetchData = async () => {
       dispatch({ type: actionTypes.fetchData });
       try {
         const { data } = await getProducts();
+        if (token) {
+          const { data: cartData } = await getCart(token);
+          dispatch({
+            type: actionTypes.setCartData,
+            payload: cartData.cart,
+          });
+        }
         if (!didCancel) {
           dispatch({ type: actionTypes.fetchSuccess });
           dispatch({

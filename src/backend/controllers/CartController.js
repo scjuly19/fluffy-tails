@@ -127,11 +127,12 @@ export const updateCartItemHandler = function (schema, request) {
         }
       });
     } else if (action.type === "decrement") {
-      userCart.forEach((product) => {
+      userCart.map((product) => {
         if (product._id === productId) {
           product.qty -= 1;
           product.updatedAt = formatDate();
         }
+        return product;
       });
     }
     this.db.users.update({ _id: userId }, { cart: userCart });

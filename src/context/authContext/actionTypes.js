@@ -4,7 +4,7 @@ export const actionTypes = {
     updateCart: "UPDATE_CART_DATA",
     fetchData:"FETCH_DATA",
     fetchSuccess:"FETCH_SUCCESS",
-    fethcFailed:"FETCH_FAILURE",
+    fetchFailed:"FETCH_FAILURE",
     addToWishlist: "ADD_TO_WISHLIST",
     removeFromWishlist: "REMOVE_FROM_WISHLIST",
     updateWishlist: "UPDATE_WISHLIST_DATA",

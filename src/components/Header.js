@@ -8,11 +8,12 @@ import { RequireAuth } from "./RequireAuth";
 import { useAuthContext } from "../context/authContext/authContext";
 export default function Header() {
   const { state: dataState } = useDataContext();
-  const { authed } = useAuthContext();
-  const { loading } = dataState;
+  const { authed,loader } = useAuthContext();
+  const { loading,cartData } = dataState;
+  let cartItemsCount=cartData.length
   return (
     <>
-      {loading && <Loader />}
+      {(loading || loader) && <Loader />}
       <Router>
         <header className="flex align-items-center header-wrapper">
           <div className="logo-wrapper">
@@ -52,7 +53,7 @@ export default function Header() {
                 <Link to="/cart">
                   <i className="fas fa-shopping-cart"></i>
 
-                  <span className="status-badge badge-wth-number round-badge hide"></span>
+                  {cartItemsCount>0&&<span className="status-badge badge-wth-number round-badge">{cartItemsCount}</span>}
                 </Link>
               </li>
             </ul>

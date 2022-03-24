@@ -23,6 +23,11 @@ export const dataReducer = ( state, action ) => {
         ...state,
         productData: action.payload,
       };
+      case actionTypes.setCartData:
+      return {
+        ...state,
+        cartData: action.payload,
+      };
     default:
       return state;
   }
