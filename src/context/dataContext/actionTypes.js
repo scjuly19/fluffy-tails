@@ -10,5 +10,8 @@ export const actionTypes = {
     updateWishlist: "UPDATE_WISHLIST_DATA",
     setProductData:'SET_PRODUCT_DATA',
     setWishlistData:'SET_WISHLIST_DATA',
-    setCartData:'SET_CART_DATA'
+    setCartData:'SET_CART_DATA',
+    setFilters:'SET_FILTERS',
+    clearFilters:'CLEAR_FILTERS',
+    setSearchParam:'SET_SEARCH_PARAM'
   };

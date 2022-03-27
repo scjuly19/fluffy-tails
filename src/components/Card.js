@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 export default function Card(props) {
-  const { price, productName, image, addedToCart,addedToWishlist } = props.item;
+  const { price, productName, image, addedToCart,addedToWishlist,rating } = props.item;
   const { isWishlist, onAddToCartClick, onWishlistClick } = props;
   
 
@@ -19,6 +19,8 @@ export default function Card(props) {
       <div className="card-description-wrapper">
         <div className="card-primary">
           <p className="uppercase">{productName}</p>
+          <span>{rating}⭐</span>
+         
           <p className="card-primary-subtitle">{`Rs.${price}/-`}</p>
         </div>
         <div className="card-actions">

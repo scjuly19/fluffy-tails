@@ -25,7 +25,7 @@ const addToWishlistClickHandler = (
     image,
   };
   addToWishlistHandler(dispatch, addItemObj, token);
-  let newData = productData.map((item) => {
+  const newData = productData.map((item) => {
     if (item._id === selectedItem._id) {
       item.addedToWishlist = true;
     }
@@ -46,7 +46,7 @@ const removeFromWishlistHandler = async (dispatch, productId, token) => {
 
 const removeFromWishlistClickHandler = (id, token, productData, dispatch) => {
   removeFromWishlistHandler(dispatch, id, token);
-  let newData = productData.map((item) => {
+  const newData = productData.map((item) => {
     if (item._id === id) {
       item.addedToWishlist = false;
     }

@@ -6,12 +6,18 @@ import { Home, Cart, Wishlist, Products, Login, Signup } from "../pages/index";
 import { useDataContext } from "../context/dataContext/dataContext";
 import { RequireAuth } from "./RequireAuth";
 import { useAuthContext } from "../context/authContext/authContext";
+import useFilter from "../hooks/useFilter";
+import { actionTypes } from "../context/dataContext/actionTypes";
 export default function Header() {
-  const { state: dataState } = useDataContext();
+  const { state: dataState, dispatch } = useDataContext();
   const { authed, loader } = useAuthContext();
-  const { loading, cartData, wishlistData } = dataState;
-  const cartItemsCount = cartData.length;
-  const wishlistCount = wishlistData.length;
+  const { loading, cartData, wishlistData, searchParam } = dataState;
+  const cartItemsCount = cartData.length > 0 ? cartData.length : null;
+  const wishlistCount = wishlistData.length > 0 ? wishlistData.length : null;
+  const handleSearchInput = (e) => {
+    e.preventDefault();
+    dispatch({ type: actionTypes.setSearchParam, payload: e.target.value });
+  };
   return (
     <>
       {(loading || loader) && <Loader />}
@@ -22,10 +28,12 @@ export default function Header() {
           </div>
           <nav className="nav-item-grp">
             <form className="navbar-search">
-              <input type="text" placeholder="Search..." />
-              <button className="borderless-btn">
-                <i className="fas fa-search"></i>
-              </button>
+              <input
+                type="text"
+                placeholder="Search..."
+                onChange={handleSearchInput}
+                value={searchParam}
+              />
             </form>
             <ul className="nav-list">
               <li className="no-bullets-li nav-list-item  mobile-logo-wrapper hide">
@@ -40,7 +48,7 @@ export default function Header() {
                 <Link to="/wishlist">
                   <i className="far fa-heart"></i>
 
-                  {wishlistCount > 0 && (
+                  {wishlistCount && (
                     <span className="status-badge badge-wth-number round-badge">
                       {wishlistCount}
                     </span>
@@ -58,7 +66,7 @@ export default function Header() {
                 <Link to="/cart">
                   <i className="fas fa-shopping-cart"></i>
 
-                  {cartItemsCount > 0 && (
+                  {cartItemsCount && (
                     <span className="status-badge badge-wth-number round-badge">
                       {cartItemsCount}
                     </span>
