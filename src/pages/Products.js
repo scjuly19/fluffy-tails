@@ -5,6 +5,10 @@ import Card from "../components/Card";
 import { useDataContext } from "../context/dataContext/dataContext";
 import { useAuthContext } from "../context/authContext/authContext";
 import { addToCartClickHandler } from "../utils/cartUtils";
+import {
+  addToWishlistClickHandler,
+  removeFromWishlistClickHandler,
+} from "../utils/wishlistUtils";
 
 export function Products() {
   const { state, dispatch } = useDataContext();
@@ -12,11 +16,25 @@ export function Products() {
   const { productData } = state;
   const handleAddToCart = (selectedItem) => {
     return () => {
-      addToCartClickHandler(selectedItem,dispatch,token,productData)
+      addToCartClickHandler(selectedItem, dispatch, token, productData);
     };
   };
   const handleAddWishlist = (selectedItem) => {
-    return () => {};
+    return () => {
+      if (
+        selectedItem.hasOwnProperty("addedToWishlist") &&
+        selectedItem.addedToWishlist
+      ) {
+        removeFromWishlistClickHandler(
+          selectedItem._id,
+          token,
+          productData,
+          dispatch
+        );
+      } else {
+        addToWishlistClickHandler(selectedItem, dispatch, token, productData);
+      }
+    };
   };
   return (
     <main>
@@ -228,7 +246,7 @@ export function Products() {
               item={item}
               key={item._id}
               onAddToCartClick={handleAddToCart(item)}
-              // onWishlistClick={handleAddWishlist(item)}
+              onWishlistClick={handleAddWishlist(item)}
             />
           ))}
         </section>

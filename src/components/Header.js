@@ -8,9 +8,10 @@ import { RequireAuth } from "./RequireAuth";
 import { useAuthContext } from "../context/authContext/authContext";
 export default function Header() {
   const { state: dataState } = useDataContext();
-  const { authed,loader } = useAuthContext();
-  const { loading,cartData } = dataState;
-  let cartItemsCount=cartData.length
+  const { authed, loader } = useAuthContext();
+  const { loading, cartData, wishlistData } = dataState;
+  const cartItemsCount = cartData.length;
+  const wishlistCount = wishlistData.length;
   return (
     <>
       {(loading || loader) && <Loader />}
@@ -39,7 +40,11 @@ export default function Header() {
                 <Link to="/wishlist">
                   <i className="far fa-heart"></i>
 
-                  <span className="status-badge badge-wth-number round-badge hide"></span>
+                  {wishlistCount > 0 && (
+                    <span className="status-badge badge-wth-number round-badge">
+                      {wishlistCount}
+                    </span>
+                  )}
                 </Link>
               </li>
               {!authed && (
@@ -53,7 +58,11 @@ export default function Header() {
                 <Link to="/cart">
                   <i className="fas fa-shopping-cart"></i>
 
-                  {cartItemsCount>0&&<span className="status-badge badge-wth-number round-badge">{cartItemsCount}</span>}
+                  {cartItemsCount > 0 && (
+                    <span className="status-badge badge-wth-number round-badge">
+                      {cartItemsCount}
+                    </span>
+                  )}
                 </Link>
               </li>
             </ul>

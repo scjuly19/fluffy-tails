@@ -1,11 +1,12 @@
 import React, { createContext, useContext, useReducer, useEffect } from "react";
-import { getProducts, getCart } from "../../network";
+import { getProducts, getCart,getWishlist } from "../../network";
 import { useAuthContext } from "../authContext/authContext";
 import { actionTypes } from "./actionTypes";
 import { dataReducer } from "./dataReducer";
 export const INITIAL_STATE = {
   productData: [],
-  cartData: []
+  cartData: [],
+  wishlistData:[]
 };
 
 const DataContext = createContext();
@@ -23,9 +24,14 @@ const DataProvider = ({ children }) => {
         const { data } = await getProducts();
         if (token) {
           const { data: cartData } = await getCart(token);
+          const {data:wishlistData}=await getWishlist(token);
           dispatch({
             type: actionTypes.setCartData,
             payload: cartData.cart,
+          });
+          dispatch({
+            type: actionTypes.setWishlistData,
+            payload: wishlistData.wishlist
           });
         }
         if (!didCancel) {
