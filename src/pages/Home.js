@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import {useNavigate } from "react-router-dom";
 import Card from "../components/Card";
 import { useAuthContext } from "../context/authContext/authContext";
 import { useDataContext } from "../context/dataContext/dataContext";
@@ -13,9 +14,14 @@ export function Home() {
   const { productData } = state;
   const bestsellers = productData.slice(-5);
   const { token } = useAuthContext();
+  const navigate = useNavigate();
+
   const handleAddToCart = (selectedItem) => {
     return () => {
-      addToCartClickHandler(selectedItem, dispatch, token, productData);
+      token
+          ?
+      addToCartClickHandler(selectedItem, dispatch, token, productData):
+      navigate("/login")
     };
   };
   const handleAddWishlist = (selectedItem) => {
@@ -31,10 +37,13 @@ export function Home() {
           dispatch
         );
       } else {
-        addToWishlistClickHandler(selectedItem, dispatch, token, productData);
+        token?
+        addToWishlistClickHandler(selectedItem, dispatch, token, productData):
+        navigate("/login")
       }
     };
   };
+  
   return (
     <main>
       <div className="hero-image-wrapper">

@@ -6,13 +6,22 @@ import { useAuthContext } from "../context/authContext/authContext";
 import { useAuthForm } from "../hooks/useAuthForm";
 export function Login() {
   const { login } = useAuthContext();
-  const { inputs, state, navigate,handleChange } = useAuthForm();
+  const { inputs, state, navigate, handleChange } = useAuthForm();
 
   /*Handles login action*/
   const handleLogin = (e) => {
     e.preventDefault();
     const { email, password } = inputs;
     login(email, password).then(() => navigate(state?.path || "/products"));
+  };
+  /**Login as guest */
+  const handleGuestLogin = (e) => {
+    e.preventDefault();
+    const guest_user="guest@gmail.com";
+    const guest_pwd="1234"
+    login(guest_user, guest_pwd).then(() =>
+      navigate(state?.path || "/products")
+    );
   };
   return (
     <main>
@@ -51,6 +60,12 @@ export function Login() {
           <Link className="btn outline-btn ml-8 uppercase" to="/signup">
             Signup
           </Link>
+          <button
+            className="btn primary-btn uppercase ml-8"
+            onClick={handleGuestLogin}
+          >
+            Login as Guest
+          </button>
         </div>
       </form>
     </main>
