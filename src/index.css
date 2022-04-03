@@ -104,15 +104,17 @@ button {
 .drawer-close-btn {
   color: var(--primary-color);
   position: absolute;
-  top: 5px;
-  right: 5px;
+  top: 15px;
+  right: 8px;
   background: none;
   border: none;
 }
 .checkout-btn {
   width: 100%;
 }
-
+input[type="checkbox"],input[type="radio"]{
+  margin-right: 10px;
+}
 .logo-wrapper a {
   color: var(--btn-font);
 }
@@ -159,6 +161,12 @@ right: -4px;
   top: 0;
   background-color: var(--faded-grey);
   opacity: 0.9;
+}
+.no-data-wrapper{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex:1 1 0;
 }
 /*Utilities*/
 .uppercase {
@@ -207,6 +215,9 @@ flex:1 1 0%;
 .flex-2{
   flex: 2 1 0%;
 }
+.show{
+  display: block;
+}
 /*Mobile specific styles*/
 @media only screen and (max-width: 768px) {
   .products-list {
@@ -246,6 +257,7 @@ flex:1 1 0%;
   .products-list {
     grid-template-columns: repeat(2, 1fr);
   }
+  
 }
 /*Large screen specific styles*/
 @media only screen and (min-width: 1280px) and (max-width: 1555px) {

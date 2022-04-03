@@ -21,7 +21,7 @@ export const dataReducer = (state, action) => {
     case actionTypes.setProductData:
       return {
         ...state,
-        productData: action.payload,
+        productData: [...action.payload],
       };
     case actionTypes.setCartData:
       return {
@@ -32,6 +32,21 @@ export const dataReducer = (state, action) => {
       return {
         ...state,
         wishlistData: action.payload,
+      };
+    case actionTypes.setFilters:
+      return {
+        ...state,
+        filters: action.payload,
+      };
+    case actionTypes.clearFilters:
+      return {
+        ...state,
+        filters: action.payload,
+      };
+    case actionTypes.setSearchParam:
+      return {
+        ...state,
+        searchParam: action.payload,
       };
     default:
       return state;

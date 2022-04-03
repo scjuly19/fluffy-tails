@@ -17,7 +17,7 @@ export function Wishlist() {
   const handleAddToCart = (selectedItem) => {
     return () => {
       addToCartClickHandler(selectedItem, dispatch, token, productData);
-      let updatedWishlistData = wishlistData.map((item) => {
+      const updatedWishlistData = wishlistData.map((item) => {
         if (item._id === selectedItem._id) {
           item.addedToCart = true;
         } else {

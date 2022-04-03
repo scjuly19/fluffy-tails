@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/products.css";
 import Card from "../components/Card";
 
@@ -9,11 +9,29 @@ import {
   addToWishlistClickHandler,
   removeFromWishlistClickHandler,
 } from "../utils/wishlistUtils";
+import Filter from "../components/Filter";
+import useFilter from "../hooks/useFilter";
+import {
+  priceFilter,
+  categoryFilter,
+  sortByFilter,
+  ratings,
+} from "../constants/filters";
+import { actionTypes } from "../context/dataContext/actionTypes";
 
 export function Products() {
   const { state, dispatch } = useDataContext();
   const { token } = useAuthContext();
   const { productData } = state;
+  const [isDrawerVisible, setDrawerVisible] = useState(false);
+  const {
+    data,
+    priceFilterChanged,
+    categoryFilterChanged,
+    sortByFilterChanged,
+    ratingFilterChanged,
+    clearFilterHandler
+  } = useFilter();
   const handleAddToCart = (selectedItem) => {
     return () => {
       addToCartClickHandler(selectedItem, dispatch, token, productData);
@@ -36,220 +54,86 @@ export function Products() {
       }
     };
   };
+  const toggleDrawer = () => setDrawerVisible(!isDrawerVisible);
+  const handlePriceFilter = (selectedItem) => {
+    return () => priceFilterChanged(selectedItem);
+  };
+  const handleCategoryFilter = (selectedItem) => {
+    return () => categoryFilterChanged(selectedItem);
+  };
+  const handleSortFilter = (selectedItem) => {
+    return () => {
+      sortByFilterChanged(selectedItem);
+    };
+  };
+  const handleRatingFilter = (selectedItem) => {
+    return () => {
+      ratingFilterChanged(selectedItem);
+    };
+  };
+  const handleClearFilters = () => {
+    clearFilterHandler()
+  };
+  const showData = data.length > 0;
   return (
     <main>
       <button
         className="borderless-btn uppercase bold btn hide filter-btn primary-txt"
         id="open-filter-menu"
+        onClick={toggleDrawer}
       >
         Filters
       </button>
-      <div className="drawer-container hide" id="filter-menu">
+      <div
+        className={`drawer-container ${isDrawerVisible ? "show" : "hide"}`}
+        id="filter-menu"
+      >
         <div className="drawer-wrapper">
           <div className="drawer" id="filter-drawer">
-            <button
-              className="`borderless-btn fs-30 drawer-close-btn"
-              id="close-filter-menu"
-            >
-              <i className="fa fa-times" aria-hidden="true"></i>
-            </button>
-            <button className="borderless-btn bold text-left">Clear All</button>
-            <section id="price">
-              <h6>Price</h6>
-              <ul className="price-list">
-                <li className="no-bullets-li">
-                  <input
-                    type="checkbox"
-                    id="price1"
-                    name="price1"
-                    value="Rs.199 to Rs.299"
-                  />
-                  <label htmlFor="price1">Rs.199 to Rs.399</label>
-                </li>
-                <li className="no-bullets-li mt-8">
-                  <input
-                    type="checkbox"
-                    id="price2"
-                    name="price2"
-                    value="Rs.399 to Rs.599"
-                  />
-                  <label htmlFor="price2">Rs.399 to Rs.599</label>
-                </li>
-                <li className="no-bullets-li mt-8">
-                  <input
-                    type="checkbox"
-                    id="price3"
-                    name="price3"
-                    value="Above Rs.599"
-                  />
-                  <label htmlFor="price3">Above Rs. 599</label>
-                </li>
-              </ul>
-            </section>
-            <section id="category">
-              <h6>Category</h6>
-              <ul className="category-list">
-                <li className="no-bullets-li">
-                  <input
-                    type="checkbox"
-                    id="category1"
-                    name="category1"
-                    value="Food"
-                  />
-                  <label htmlFor="category1">Food</label>
-                </li>
-                <li className="no-bullets-li mt-8">
-                  <input
-                    type="checkbox"
-                    id="category2"
-                    name="category2"
-                    value="Clothes"
-                  />
-                  <label htmlFor="category2">Clothes</label>
-                </li>
-                <li className="no-bullets-li mt-8">
-                  <input
-                    type="checkbox"
-                    id="category3"
-                    name="category3"
-                    value="Toys"
-                  />
-                  <label htmlFor="category3">Toys</label>
-                </li>
-              </ul>
-            </section>
-            <section id="sort-by">
-              <h6>Sort by</h6>
-              <ul className="sort-by-list">
-                <li className="no-bullets-li">
-                  <input
-                    type="checkbox"
-                    id="lowToHigh"
-                    name="lowToHigh"
-                    value="lowToHigh"
-                  />
-                  <label htmlFor="lowToHigh">Price- Low to High</label>
-                </li>
-                <li className="no-bullets-li mt-8">
-                  <input
-                    type="checkbox"
-                    id="highToLow"
-                    name="highToLow"
-                    value="highToLow"
-                  />
-                  <label htmlFor="highToLow">Price- High to Low</label>
-                </li>
-              </ul>
-            </section>
+            <Filter
+              isDrawer
+              onCloseClicked={toggleDrawer}
+              onPriceFilterClick={handlePriceFilter}
+              onCategoryFilterChanged={handleCategoryFilter}
+              onSortFilterChange={handleSortFilter}
+              onRatingFilterChange={handleRatingFilter}
+              onClearFilters={handleClearFilters}
+            />
           </div>
         </div>
       </div>
       <div className="content-wrapper">
         <nav className="side-nav-container">
-          <button className="borderless-btn bold  text-underline clear-btn primary-txt">
-            Clear All
-          </button>
-          <section id="price">
-            <h6>Price</h6>
-            <ul className="price-list">
-              <li className="no-bullets-li">
-                <input
-                  type="checkbox"
-                  id="price1"
-                  name="price1"
-                  value="Rs.199 to Rs.299"
-                />
-                <label htmlFor="price1">Rs.199 to Rs.399</label>
-              </li>
-              <li className="no-bullets-li mt-8">
-                <input
-                  type="checkbox"
-                  id="price2"
-                  name="price2"
-                  value="Rs.399 to Rs.599"
-                />
-                <label htmlFor="price2">Rs.399 to Rs.599</label>
-              </li>
-              <li className="no-bullets-li mt-8">
-                <input
-                  type="checkbox"
-                  id="price3"
-                  name="price3"
-                  value="Above Rs.599"
-                />
-                <label htmlFor="price3">Above Rs. 599</label>
-              </li>
-            </ul>
-          </section>
-          <section id="category">
-            <h6>Category</h6>
-            <ul className="category-list">
-              <li className="no-bullets-li">
-                <input
-                  type="checkbox"
-                  id="category1"
-                  name="category1"
-                  value="Food"
-                />
-                <label htmlFor="category1">Food</label>
-              </li>
-              <li className="no-bullets-li mt-8">
-                <input
-                  type="checkbox"
-                  id="category2"
-                  name="category2"
-                  value="Clothes"
-                />
-                <label htmlFor="category2">Clothes</label>
-              </li>
-              <li className="no-bullets-li mt-8">
-                <input
-                  type="checkbox"
-                  id="category3"
-                  name="category3"
-                  value="Toys"
-                />
-                <label htmlFor="category3">Toys</label>
-              </li>
-            </ul>
-          </section>
-          <section id="sort-by">
-            <h6>Sort by</h6>
-            <ul className="sort-by-list">
-              <li className="no-bullets-li">
-                <input
-                  type="checkbox"
-                  id="lowToHigh"
-                  name="lowToHigh"
-                  value="lowToHigh"
-                />
-                <label htmlFor="lowToHigh">Price- Low to High</label>
-              </li>
-              <li className="no-bullets-li mt-8">
-                <input
-                  type="checkbox"
-                  id="highToLow"
-                  name="highToLow"
-                  value="highToLow"
-                />
-                <label htmlFor="highToLow">Price- High to Low</label>
-              </li>
-            </ul>
-          </section>
+          <Filter
+            onPriceFilterClick={handlePriceFilter}
+            onCategoryFilterChanged={handleCategoryFilter}
+            onSortFilterChange={handleSortFilter}
+            onRatingFilterChange={handleRatingFilter}
+            onClearFilters={handleClearFilters}
+          />
         </nav>
-        <section
-          id="products"
-          className="products-list product-content-wrapper"
-        >
-          {productData.map((item) => (
-            <Card
-              item={item}
-              key={item._id}
-              onAddToCartClick={handleAddToCart(item)}
-              onWishlistClick={handleAddWishlist(item)}
-            />
-          ))}
-        </section>
+        {showData ? (
+          <section
+            id="products"
+            className="products-list product-content-wrapper"
+          >
+            {data.map((item) => (
+              <Card
+                item={item}
+                key={item._id}
+                onAddToCartClick={handleAddToCart(item)}
+                onWishlistClick={handleAddWishlist(item)}
+              />
+            ))}
+          </section>
+        ) : (
+          <div className="no-data-wrapper mt-16">
+            <div>
+              <img src="images/no-data.png" />
+              <p className="text-center bold">Sorry! No records found</p>
+            </div>
+          </div>
+        )}
       </div>
     </main>
   );

@@ -1,12 +1,21 @@
 import React, { createContext, useContext, useReducer, useEffect } from "react";
+import { priceFilter,categoryFilter,sortByFilter,ratings } from "../../constants/filters";
 import { getProducts, getCart,getWishlist } from "../../network";
 import { useAuthContext } from "../authContext/authContext";
 import { actionTypes } from "./actionTypes";
 import { dataReducer } from "./dataReducer";
+
 export const INITIAL_STATE = {
   productData: [],
   cartData: [],
-  wishlistData:[]
+  wishlistData:[],
+  filters:{
+    priceFilter,
+    categoryFilter,
+    sortByFilter,
+    ratings
+  },
+  searchParam:""
 };
 
 const DataContext = createContext();
