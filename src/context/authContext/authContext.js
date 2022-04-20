@@ -56,11 +56,11 @@ const useAuth = () => {
       setAuthed(false);
     }
   };
-  return { authed, login, userData, token, signUp,loader };
+  return { authed, login, userData, token, signUp,loader,setAuthed,setLoader };
 };
 const AuthProvider = ({ children }) => {
-  const { authed, login, userData, signUp, token,loader } = useAuth();
-  const value = { authed, login, userData, signUp, token,loader };
+  const { authed, login, userData, signUp, token,loader,setAuthed,setLoader } = useAuth();
+  const value = { authed, login, userData, signUp, token,loader,setAuthed,setLoader };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 export { AuthProvider, useAuthContext };

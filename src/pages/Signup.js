@@ -50,7 +50,7 @@ export function Signup() {
 
           <label htmlFor="password" className="mt-16 block uppercase">Password</label>
           <input
-            type="text"
+            type="password"
             id="password"
             className="block input basic-input form-input"
             name="password"

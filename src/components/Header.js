@@ -6,17 +6,36 @@ import { Home, Cart, Wishlist, Products, Login, Signup } from "../pages/index";
 import { useDataContext } from "../context/dataContext/dataContext";
 import { RequireAuth } from "./RequireAuth";
 import { useAuthContext } from "../context/authContext/authContext";
-import useFilter from "../hooks/useFilter";
 import { actionTypes } from "../context/dataContext/actionTypes";
+import useFilter from "../hooks/useFilter";
 export default function Header() {
   const { state: dataState, dispatch } = useDataContext();
-  const { authed, loader } = useAuthContext();
-  const { loading, cartData, wishlistData, searchParam } = dataState;
+  const { authed, loader, setAuthed,setLoader } = useAuthContext();
+ const{clearFilterHandler}= useFilter();
+  const { loading, cartData, wishlistData, searchParam,productData } = dataState;
   const cartItemsCount = cartData.length > 0 ? cartData.length : null;
   const wishlistCount = wishlistData.length > 0 ? wishlistData.length : null;
   const handleSearchInput = (e) => {
     e.preventDefault();
     dispatch({ type: actionTypes.setSearchParam, payload: e.target.value });
+  };
+  const handleLogout = (e) => {
+    e.preventDefault();
+    setLoader(true);
+    clearFilterHandler();
+    localStorage.clear();
+    setTimeout(()=>{
+      setLoader(false);
+      setAuthed(false);
+      dispatch({type:actionTypes.setWishlistData,payload:[]});
+      dispatch({type:actionTypes.setCartData,payload:[]})
+      const productDataInitial=productData.map(item=>{
+        item.addedToCart=false;
+        item.addedToWishlist=false;
+        return item
+      });
+      dispatch({type:actionTypes.setProductData,payload:productDataInitial})
+    },1000)
   };
   return (
     <>
@@ -73,6 +92,16 @@ export default function Header() {
                   )}
                 </Link>
               </li>
+              {authed && (
+                <li className="no-bullets-li nav-list-item">
+                  <button
+                    className="borderless-btn ml-8"
+                    onClick={handleLogout}
+                  >
+                    <i className="fas fa-power-off" aria-hidden="true"></i>
+                  </button>
+                </li>
+              )}
             </ul>
             <div className="drawer-container hide" id="cart-drawer-container">
               <div className="drawer-wrapper">

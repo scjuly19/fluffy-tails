@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import "../styles/products.css";
 import Card from "../components/Card";
 
@@ -11,30 +13,26 @@ import {
 } from "../utils/wishlistUtils";
 import Filter from "../components/Filter";
 import useFilter from "../hooks/useFilter";
-import {
-  priceFilter,
-  categoryFilter,
-  sortByFilter,
-  ratings,
-} from "../constants/filters";
-import { actionTypes } from "../context/dataContext/actionTypes";
 
 export function Products() {
   const { state, dispatch } = useDataContext();
   const { token } = useAuthContext();
   const { productData } = state;
   const [isDrawerVisible, setDrawerVisible] = useState(false);
+  const navigate = useNavigate();
   const {
     data,
     priceFilterChanged,
     categoryFilterChanged,
     sortByFilterChanged,
     ratingFilterChanged,
-    clearFilterHandler
+    clearFilterHandler,
   } = useFilter();
   const handleAddToCart = (selectedItem) => {
     return () => {
-      addToCartClickHandler(selectedItem, dispatch, token, productData);
+      token
+        ? addToCartClickHandler(selectedItem, dispatch, token, productData)
+        : navigate("/login");
     };
   };
   const handleAddWishlist = (selectedItem) => {
@@ -50,7 +48,14 @@ export function Products() {
           dispatch
         );
       } else {
-        addToWishlistClickHandler(selectedItem, dispatch, token, productData);
+        token
+          ? addToWishlistClickHandler(
+              selectedItem,
+              dispatch,
+              token,
+              productData
+            )
+          : navigate("/login");
       }
     };
   };
@@ -72,7 +77,7 @@ export function Products() {
     };
   };
   const handleClearFilters = () => {
-    clearFilterHandler()
+    clearFilterHandler();
   };
   const showData = data.length > 0;
   return (
